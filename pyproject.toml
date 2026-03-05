@@ -4,6 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.12"
 dependencies = [
+    "fake-useragent>=2.2.0",
+    "loguru>=0.7.3",
+    "playwright>=1.58.0",
     "pre-commit>=4.5.1",
     "ruff>=0.15.4",
+    "selectolax>=0.4.6",
 ]

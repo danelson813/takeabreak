@@ -6,7 +6,6 @@ from selectolax.lexbor import LexborHTMLParser
 from playwright.async_api import async_playwright
 
 ua = UserAgent()
-url = "https://www.flowershopping.com/special-promotions/best-sellers?p=1"
 
 
 def save_csv(list_, filename="results.csv"):
@@ -80,14 +79,22 @@ def parse(html):
     return results
 
 
-async def main(url):
-    html = await fetch(url)
-    cards = parse(html)
-    return cards
+async def mix(html):
+    html = await fetch(html)
+    list = parse(html)
+    return list
+
+async def main():
+    urls = ["https://www.flowershopping.com/special-promotions/best-sellers?p={}" for i in range(1, 6) ]
+    async with async_playwright() as p:
+        tasks = [mix(url) for url in urls]
+        list_ = await asyncio.gather(*tasks)
+        flat = [item for sublist in list_ for item in sublist]
+        return flat
 
 
 if __name__ == "__main__":
-    list_ = asyncio.run(main(url))
+    list_ = asyncio.run(main())
     if list_:
         print(f"Captured {len(list_)} items.")
         # print(list_[0])
